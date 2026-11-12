@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Torah Translation - Live Progress</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --ink:#1c2430; --muted:#5b6572;
+    --line:#e4e8ee; --accent:#2f6fed; --accent-soft:#e8effd;
+    --good:#1f9d63; --good-soft:#e3f5ec; --warn:#b97b12; --warn-soft:#fdf3e0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:28px 18px 60px}
+  header{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+  h1{font-size:24px;margin:0;font-weight:700;letter-spacing:-.01em}
+  .updated{color:var(--muted);font-size:13px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin-bottom:16px;box-shadow:0 1px 2px rgba(20,30,50,.04)}
+  .now{display:flex;gap:14px;align-items:flex-start}
+  .pulse{flex:none;width:10px;height:10px;border-radius:50%;background:var(--accent);margin-top:7px;
+    animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.8)}}
+  .now .label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:3px}
+  .now .text{font-size:15px;line-height:1.45}
+  .overall-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:14px}
+  .stat{background:var(--accent-soft);border-radius:10px;padding:12px 14px}
+  .stat .num{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+  .stat .lbl{font-size:12px;color:var(--muted);margin-top:2px}
+  .bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:10px}
+  .bar>div{height:100%;background:var(--accent);border-radius:99px;transition:width .6s ease}
+  .bar.good>div{background:var(--good)}
+  .work{display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid var(--line)}
+  .work:first-of-type{border-top:none}
+  .work .name{flex:none;width:170px;font-size:15px}
+  .work .he{direction:rtl}
+  .work .mid{flex:1}
+  .work .meta{font-size:12px;color:var(--muted);margin-top:3px;font-variant-numeric:tabular-nums}
+  .badge{flex:none;font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+  .badge.working{background:var(--warn-soft);color:var(--warn)}
+  .badge.done{background:var(--good-soft);color:var(--good)}
+  .log{list-style:none;margin:0;padding:0}
+  .log li{padding:9px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.45;display:flex;gap:12px}
+  .log li:first-child{border-top:none}
+  .log time{flex:none;color:var(--muted);font-size:12px;padding-top:2px;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .foot{color:var(--muted);font-size:12px;text-align:center;margin-top:8px}
+  a{color:var(--accent);text-decoration:none}
+  .err{color:#b3261e;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Torah Translation - Live Progress</h1>
+    <div class="updated" id="updated">loading...</div>
+  </header>
+
+  <div class="card">
+    <div class="now">
+      <div class="pulse"></div>
+      <div>
+        <div class="label">Working on right now</div>
+        <div class="text" id="current">loading...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="overall-grid" id="stats"></div>
+    <div style="font-size:13px;color:var(--muted)" id="overall-lbl">Overall translation progress</div>
+    <div class="bar"><div id="overall-bar" style="width:0%"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="label" style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">Per work</div>
+    <div id="works"></div>
+  </div>
+
+  <div class="card">
+    <div class="label" style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">Recent activity</div>
+    <ul class="log" id="log"></ul>
+  </div>
+
+  <div class="foot">Auto-refreshes every minute &middot; <a href="https://avishorwork-wq.github.io/torah-word-lookup/">Open Learning Lookup</a></div>
+</div>
+<script>
+function fmt(n){return (n==null?'0':n).toLocaleString('en-US')}
+function fmtTime(iso){
+  try{
+    const d=new Date(iso);
+    return d.toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+  }catch(e){return iso}
+}
+async function load(){
+  let s;
+  try{
+    const r=await fetch('status.json?t='+Date.now(),{cache:'no-store'});
+    s=await r.json();
+  }catch(e){
+    document.getElementById('current').innerHTML='<span class="err">Could not load status.json - retrying...</span>';
+    return;
+  }
+  document.getElementById('updated').textContent='Updated '+fmtTime(s.updated);
+  document.getElementById('current').textContent=s.current||'-';
+  document.getElementById('stats').innerHTML=
+    '<div class="stat"><div class="num">'+fmt(s.overall.glossed_done)+'</div><div class="lbl">words translated</div></div>'+
+    '<div class="stat"><div class="num">'+fmt(s.overall.netnew_total)+'</div><div class="lbl">new words found</div></div>'+
+    '<div class="stat"><div class="num">'+s.overall.works_done+' / '+s.overall.works_total+'</div><div class="lbl">works downloaded</div></div>';
+  const pct=s.overall.netnew_total?Math.round(100*s.overall.glossed_done/s.overall.netnew_total):0;
+  document.getElementById('overall-bar').style.width=pct+'%';
+  document.getElementById('overall-lbl').textContent='Overall translation progress - '+pct+'% ('+(s.overall.stage||'')+')';
+  const w=(s.works||[]).map(x=>{
+    const p=x.net_new?Math.round(100*x.glossed/x.net_new):0;
+    return '<div class="work">'+
+      '<div class="name he">'+x.name+'</div>'+
+      '<div class="mid"><div class="bar'+(p>=100?' good':'')+'"><div style="width:'+p+'%"></div></div>'+
+      '<div class="meta">'+fmt(x.glossed)+' / '+fmt(x.net_new)+' words &middot; '+x.books_done+'/'+x.books+' books'+(x.note?' &middot; '+x.note:'')+'</div></div>'+
+      '<div class="badge '+x.status+'">'+(x.status==='done'?'done':'working')+'</div></div>';
+  }).join('');
+  document.getElementById('works').innerHTML=w;
+  document.getElementById('log').innerHTML=(s.log||[]).slice().reverse().map(e=>
+    '<li><time>'+fmtTime(e.ts)+'</time><span>'+e.msg+'</span></li>').join('');
+}
+load();
+setInterval(load,60000);
+</script>
+</body>
+</html>
