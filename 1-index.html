@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Translation Progress - Torah Texts</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: -apple-system, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; max-width: 900px; margin-inline: auto; line-height: 1.5; }
+  h1 { font-size: 1.5rem; margin-bottom: 2px; }
+  .sub { opacity: .75; font-size: .9rem; margin-bottom: 16px; }
+  .card { border: 1px solid #8884; border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+  .big { font-size: 1.9rem; font-weight: 700; }
+  .bar { height: 10px; background: #8883; border-radius: 6px; overflow: hidden; margin-top: 8px; }
+  .bar > div { height: 100%; background: #2e7d32; width: 0%; transition: width .5s; }
+  table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #8883; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .he { font-weight: 600; }
+  .status { font-size: .8rem; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
+  .done { background: #2e7d3233; color: #2e7d32; }
+  .working { background: #f9a82533; color: #b26a00; }
+  .waiting { background: #8882; color: #888; }
+  #current { font-weight: 600; }
+  #log { font-size: .85rem; opacity: .85; max-height: 180px; overflow-y: auto; }
+  #log div { padding: 2px 0; border-bottom: 1px dotted #8882; }
+  a { color: #1565c0; }
+</style>
+</head>
+<body>
+<h1>Torah Texts Translation - Live Progress</h1>
+<div class="sub">15 Torah works, word-by-word English translations with sources, being added to <a href="https://avishorwork-wq.github.io/torah-word-lookup/">Learning Lookup</a>. This page updates automatically.</div>
+<div class="card">
+  <div id="stage"></div>
+  <div>Now working on: <span id="current"></span></div>
+  <div class="bar"><div id="bar"></div></div>
+  <div style="margin-top:6px"><span class="big" id="glossed">0</span> / <span id="total"></span> new words translated
+  &nbsp;&middot;&nbsp; <span id="updated"></span></div>
+</div>
+<div class="card">
+  <table>
+    <thead><tr><th>Work</th><th class="num">Books</th><th class="num">Words</th><th class="num">New words</th><th class="num">Translated</th><th>Status</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+</div>
+<div class="card"><div style="font-weight:600;margin-bottom:4px">Log</div><div id="log"></div></div>
+<script>
+function fmt(n){ return (n||0).toLocaleString('en-US'); }
+function statusBadge(s){
+  if(s==='done') return '<span class="status done">done</span>';
+  if(s==='downloaded') return '<span class="status waiting">downloaded, waiting</span>';
+  if(s==='working') return '<span class="status working">working</span>';
+  if(s==='finding_source') return '<span class="status waiting">finding source</span>';
+  return '<span class="status waiting">'+s+'</span>';
+}
+async function tick(){
+  try{
+    const r = await fetch('status.json?ts='+Date.now(), {cache:'no-store'});
+    const d = await r.json();
+    document.getElementById('stage').textContent = d.overall.stage;
+    document.getElementById('current').textContent = d.current;
+    document.getElementById('glossed').textContent = fmt(d.overall.glossed_done);
+    document.getElementById('total').textContent = fmt(d.overall.netnew_total);
+    document.getElementById('bar').firstElementChild; 
+    document.getElementById('bar').style.width = (100*(d.overall.glossed_done/(d.overall.netnew_total||1))).toFixed(1)+'%';
+    document.getElementById('updated').textContent = 'updated '+new Date(d.updated).toLocaleString();
+    const rows = document.getElementById('rows');
+    rows.innerHTML='';
+    for(const w of d.works){
+      const tr=document.createElement('tr');
+      tr.innerHTML = '<td class="he" dir="rtl">'+w.name+'</td><td class="num">'+w.books_done+'/'+w.books+'</td><td class="num">'+fmt(w.tokens)+'</td><td class="num">'+fmt(w.net_new)+'</td><td class="num">'+fmt(w.glossed)+'</td><td>'+statusBadge(w.status)+(w.note?'<div style="font-size:.78rem;opacity:.7">'+w.note+'</div>':'')+'</td>';
+      rows.appendChild(tr);
+    }
+    const log=document.getElementById('log');
+    log.innerHTML='';
+    for(const e of d.log.slice().reverse()){
+      const dv=document.createElement('div');
+      dv.textContent = new Date(e.ts).toLocaleString()+' - '+e.msg;
+      log.appendChild(dv);
+    }
+  }catch(e){ /* retry next tick */ }
+}
+tick(); setInterval(tick, 30000);
+</script>
+</body>
+</html>
