@@ -1,14 +1,14 @@
 {
- "updated": "2026-11-12T20:27:24.872123+00:00",
+ "updated": "2026-11-12T21:09:08.301998+00:00",
  "site": "Torah texts translation - live progress",
  "overall": {
   "works_done": 15,
   "works_total": 16,
   "netnew_total": 108015,
-  "glossed_done": 80,
-  "stage": "Verifying drafts against Sefaria dictionaries (Jastrow/BDB/Klein/Ben Yehuda); 80 words verified so far"
+  "glossed_done": 305,
+  "stage": "Verified wave 1 published: 305 words confirmed against Sefaria lexicons; verification of the rest continues"
  },
- "current": "Verification wave 1 in progress: checking all 108,015 new words against Sefaria dictionary APIs, highest-frequency first. 80 verified so far; verified wave publishes when the pool reaches a few hundred.",
+ "current": "Wave 1 live in Learning Lookup: 305 highest-frequency new words now carry glosses verified against Jastrow/BDB/Klein (exact-word matches only). All other new words keep \"Meaning not yet settled\". Verification continues down the frequency list.",
  "works": [
   {
    "key": "gemara",
@@ -189,6 +189,10 @@
   }
  ],
  "log": [
+  {
+   "ts": "2026-11-12T21:09:08.301998+00:00",
+   "msg": "Verified wave 1 published to torah-word-lookup: 305 exact-match lexicon glosses (top ~5,100 most frequent words checked; exact-word yield ~6%). Audit of existing glosses (400-entry sample): ~97.7% correct, 9 likely errors reported for review."
+  },
   {
    "ts": "2026-11-12T20:27:24.872123+00:00",
    "msg": "Sha'ar HaTziyun marked on hold per Avi's instruction; verification waves continue (80 words verified)."
