@@ -1,14 +1,14 @@
 {
- "updated": "2026-11-12T21:09:08.301998+00:00",
+ "updated": "2026-11-12T21:31:27.501664+00:00",
  "site": "Torah texts translation - live progress",
  "overall": {
   "works_done": 15,
   "works_total": 16,
   "netnew_total": 108015,
-  "glossed_done": 305,
-  "stage": "Verified wave 1 published: 305 words confirmed against Sefaria lexicons; verification of the rest continues"
+  "glossed_done": 601,
+  "stage": "Verified waves 1-2 live: 601 words confirmed against Sefaria lexicons; verification continues"
  },
- "current": "Wave 1 live in Learning Lookup: 305 highest-frequency new words now carry glosses verified against Jastrow/BDB/Klein (exact-word matches only). All other new words keep \"Meaning not yet settled\". Verification continues down the frequency list.",
+ "current": "Wave 2 live in Learning Lookup: 601 highest-frequency new words now carry lexicon-verified glosses (exact-word matches only; ~12,300 most frequent checked). The rest keep \"Meaning not yet settled\".",
  "works": [
   {
    "key": "gemara",
@@ -189,6 +189,10 @@
   }
  ],
  "log": [
+  {
+   "ts": "2026-11-12T21:31:27.501664+00:00",
+   "msg": "Verified wave 2 published: 601 total verified glosses live (+296)."
+  },
   {
    "ts": "2026-11-12T21:09:08.301998+00:00",
    "msg": "Verified wave 1 published to torah-word-lookup: 305 exact-match lexicon glosses (top ~5,100 most frequent words checked; exact-word yield ~6%). Audit of existing glosses (400-entry sample): ~97.7% correct, 9 likely errors reported for review."
