@@ -1,14 +1,14 @@
 {
- "updated": "2026-11-12T19:28:18.703576+00:00",
+ "updated": "2026-11-12T19:57:35.113633+00:00",
  "site": "Torah texts translation - live progress",
  "overall": {
   "works_done": 15,
   "works_total": 16,
   "netnew_total": 108015,
-  "glossed_done": 102553,
-  "stage": "Quality-checking draft translations, then publishing corrected wave 1"
+  "glossed_done": 0,
+  "stage": "Verifying each draft against dictionaries (Jastrow/Sokoloff/BDB) and Sefaria translations"
  },
- "current": "Quality audit of the 102,553 draft glosses: removing unreliable guesses (44,139 downgraded to \"Meaning not yet settled\"), keeping 58,131 solid drafts. Republishing corrected wave 1 to Learning Lookup now; then Shaar HaTziyun download from Wikisource.",
+ "current": "Wave 1 republished fully neutral (all 108,015 new words marked \"Meaning not yet settled\" until verified). Now verifying drafts against reliable sources, highest-frequency first; verified waves publish next.",
  "works": [
   {
    "key": "gemara",
@@ -18,7 +18,7 @@
    "tokens": 1853448,
    "unique": 90901,
    "net_new": 7356,
-   "glossed": 7043,
+   "glossed": 0,
    "status": "working"
   },
   {
@@ -29,7 +29,7 @@
    "tokens": 2232537,
    "unique": 94897,
    "net_new": 494,
-   "glossed": 452,
+   "glossed": 0,
    "status": "working"
   },
   {
@@ -40,7 +40,7 @@
    "tokens": 486760,
    "unique": 45220,
    "net_new": 5776,
-   "glossed": 5347,
+   "glossed": 0,
    "status": "working"
   },
   {
@@ -51,7 +51,7 @@
    "tokens": 1549359,
    "unique": 88847,
    "net_new": 26047,
-   "glossed": 24991,
+   "glossed": 0,
    "status": "working"
   },
   {
@@ -62,7 +62,7 @@
    "tokens": 961116,
    "unique": 67446,
    "net_new": 11097,
-   "glossed": 10507,
+   "glossed": 0,
    "status": "working"
   },
   {
@@ -73,7 +73,7 @@
    "tokens": 764870,
    "unique": 52519,
    "net_new": 12897,
-   "glossed": 12522,
+   "glossed": 0,
    "status": "working"
   },
   {
@@ -84,7 +84,7 @@
    "tokens": 87368,
    "unique": 16874,
    "net_new": 1806,
-   "glossed": 1735,
+   "glossed": 0,
    "status": "working"
   },
   {
@@ -95,7 +95,7 @@
    "tokens": 686768,
    "unique": 54779,
    "net_new": 10969,
-   "glossed": 10631,
+   "glossed": 0,
    "status": "working"
   },
   {
@@ -106,7 +106,7 @@
    "tokens": 3178768,
    "unique": 118275,
    "net_new": 37509,
-   "glossed": 35941,
+   "glossed": 0,
    "status": "working"
   },
   {
@@ -117,7 +117,7 @@
    "tokens": 296984,
    "unique": 30517,
    "net_new": 5523,
-   "glossed": 5283,
+   "glossed": 0,
    "status": "working"
   },
   {
@@ -128,7 +128,7 @@
    "tokens": 699141,
    "unique": 52560,
    "net_new": 11604,
-   "glossed": 11224,
+   "glossed": 0,
    "status": "working"
   },
   {
@@ -139,7 +139,7 @@
    "tokens": 659200,
    "unique": 49706,
    "net_new": 13065,
-   "glossed": 12571,
+   "glossed": 0,
    "status": "working"
   },
   {
@@ -150,7 +150,7 @@
    "tokens": 399122,
    "unique": 35102,
    "net_new": 8525,
-   "glossed": 8260,
+   "glossed": 0,
    "status": "working"
   },
   {
@@ -161,7 +161,7 @@
    "tokens": 403187,
    "unique": 41551,
    "net_new": 9113,
-   "glossed": 8668,
+   "glossed": 0,
    "status": "working"
   },
   {
@@ -172,7 +172,7 @@
    "tokens": 126311,
    "unique": 22757,
    "net_new": 5500,
-   "glossed": 5177,
+   "glossed": 0,
    "status": "working"
   },
   {
@@ -200,6 +200,10 @@
   {
    "ts": "2026-11-12T19:28:18.703576+00:00",
    "msg": "Quality audit: 44,139 unreliable draft glosses (very short word-stem matches) downgraded to \"Meaning not yet settled; see source context.\" 58,131 solid drafts kept. Republishing corrected wave 1."
+  },
+  {
+   "ts": "2026-11-12T19:57:35.113633+00:00",
+   "msg": "Accuracy-first reset: all 102,553 unverified related-form drafts removed from the live lookup; wave 1 republished with all 108,015 new words neutral. Verified glosses will be published wave by wave after source verification."
   }
  ]
 }
