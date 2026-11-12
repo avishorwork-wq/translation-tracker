@@ -106,12 +106,12 @@ async function load(){
   document.getElementById('updated').textContent='Updated '+fmtTime(s.updated);
   document.getElementById('current').textContent=s.current||'-';
   document.getElementById('stats').innerHTML=
-    '<div class="stat"><div class="num">'+fmt(s.overall.glossed_done)+'</div><div class="lbl">words translated</div></div>'+
+    '<div class="stat"><div class="num">'+fmt(s.overall.glossed_done)+'</div><div class="lbl">words verified</div></div>'+
     '<div class="stat"><div class="num">'+fmt(s.overall.netnew_total)+'</div><div class="lbl">new words found</div></div>'+
     '<div class="stat"><div class="num">'+s.overall.works_done+' / '+s.overall.works_total+'</div><div class="lbl">works downloaded</div></div>';
   const pct=s.overall.netnew_total?Math.round(100*s.overall.glossed_done/s.overall.netnew_total):0;
   document.getElementById('overall-bar').style.width=pct+'%';
-  document.getElementById('overall-lbl').textContent='Overall translation progress - '+pct+'% ('+(s.overall.stage||'')+')';
+  document.getElementById('overall-lbl').textContent='Verified so far - '+pct+'% ('+(s.overall.stage||'')+')';
   const w=(s.works||[]).map(x=>{
     const p=x.net_new?Math.round(100*x.glossed/x.net_new):0;
     return '<div class="work">'+
